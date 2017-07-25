@@ -3,11 +3,6 @@ var fs = require("fs");
 
 
 
-
-
-
-
-
 //===================   VARIABLES   ===================
 
 var command = process.argv[2];
@@ -42,6 +37,14 @@ switch (command) {
 
         for (var i = 0; i < tweets.length; i++) {
           console.log(tweets[i].text);
+          fs.appendFile('log.txt', "\nTweet: " + tweets[i].text, function(err) {
+            if (err) {
+              console.log(err);
+            }
+            else {
+              console.log("Content Added!");
+            }
+          });
         }
       }
     });
@@ -70,6 +73,17 @@ switch (command) {
         console.log("Song: " + response.tracks.items[0].name); // Song name
         console.log("Preview Link: " + response.tracks.items[0].preview_url); // Preview link
         console.log("Album: " + response.tracks.items[0].album.name); // Album name
+
+        var trackData = "Artist: " + response.tracks.items[0].artists[0].name + "\nSong: " + response.tracks.items[0].name + "\nPreview Link: " + response.tracks.items[0].preview_url + "\nAlbum: " + response.tracks.items[0].album.name;
+
+        fs.appendFile('log.txt', trackData, function(err) {
+          if (err) {
+            console.log(err);
+          }
+          else {
+            console.log("Content Added!");
+          }
+        });
       })
       .catch(function(err) {
         console.log(err);
@@ -93,6 +107,17 @@ switch (command) {
       console.log("Language: " + JSON.parse(body).Language);
       console.log("Plot: " + JSON.parse(body).Plot);
       console.log("Actors: " + JSON.parse(body).Actors);
+
+      var movieData = "\nTitle: " + JSON.parse(body).Title + "\nRelease Year: " + JSON.parse(body).Year + "\nIMDB Rating: " + JSON.parse(body).imdbRating + "\nRotten Tomatoes Rating: " + JSON.parse(body).Ratings[1].Value + "\nCountry Produced: " + JSON.parse(body).Country + "\nLanguage: " + JSON.parse(body).Language + "\nPlot: " + JSON.parse(body).Plot + "\nActors: " + JSON.parse(body).Actors;
+
+      fs.appendFile('log.txt', movieData, function(err) {
+        if (err) {
+          console.log(err);
+        }
+        else {
+          console.log("Content Added!");
+        }
+      });
     });
     break;
 
@@ -122,11 +147,11 @@ switch (command) {
     });
 
     var cmd = require('node-cmd');
-    cmd.run('node liri.js spotify-this-song "Kiss"');
+    cmd.run('node liri.js spotify-this-song "I Want it That Way"');
 
 
     var nrc = require('node-run-cmd');
-    nrc.run('node liri.js spotify-this-song "Kiss"');
+    nrc.run('node liri.js spotify-this-song "I Want it That Way"');
 
 
     break;
